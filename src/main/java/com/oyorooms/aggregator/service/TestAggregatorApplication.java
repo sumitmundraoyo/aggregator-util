@@ -11,9 +11,10 @@ public class TestAggregatorApplication {
     public static void main(String[] args) {
         final ExecutorService executor = Executors.newFixedThreadPool(10);
         ServiceAggregator aggregator = new DAGWiseServiceAggregator();
-        Map<Service, CompletableFuture<ServiceResponse>> futureMap = aggregator.aggregate(new HashSet<>(EnumSet.allOf(ServiceName.class)));
+        Map<Service, CompletableFuture<ServiceResponse>> futureMap =
+                aggregator.aggregate(new HashSet<>(EnumSet.allOf(ServiceName.class)), null);
         CompletableFuture.allOf(futureMap.values().toArray(new CompletableFuture[0])).join();
         System.out.println("end");
-        CompletableFuture.allOf(aggregator.aggregate(ServiceName.setOf(ServiceName.G)).values().toArray(new CompletableFuture[0])).join();
+        CompletableFuture.allOf(aggregator.aggregate(ServiceName.setOf(ServiceName.G), null, executor).values().toArray(new CompletableFuture[0])).join();
     }
 }

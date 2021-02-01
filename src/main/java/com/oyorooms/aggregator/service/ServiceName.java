@@ -31,29 +31,22 @@ public enum ServiceName implements Service {
     }
 
     @Override
-    public CompletableFuture<ServiceResponse> executeAsync(Map<Service, CompletableFuture<ServiceResponse>> futureMap) {
-        return CompletableFuture.supplyAsync(() -> {
-            System.out.println(Thread.currentThread().getName() + ":: Executing " + this.name());
-            try {
-                Thread.sleep(5000L);
-            } catch (InterruptedException e) {
-                System.out.println("Interrupted in sleep");
-            }
-            return new ApiResponse();
-        });
+    public CompletableFuture<ServiceResponse> executeAsync(Map<Service, CompletableFuture<ServiceResponse>> futureMap
+            , AggregatorRequest request, Executor executor) {
+        if (executor == null) {
+            return CompletableFuture.supplyAsync(this::runDummyApi);
+        }
+        return CompletableFuture.supplyAsync(this::runDummyApi, executor);
     }
 
-    @Override
-    public CompletableFuture<ServiceResponse> executeAsync(Map<Service, CompletableFuture<ServiceResponse>> futureMap, Executor executor) {
-        return CompletableFuture.supplyAsync(() -> {
-            System.out.println(Thread.currentThread().getName() + ":: Executing " + this.name());
-            try {
-                Thread.sleep(5000L);
-            } catch (InterruptedException e) {
-                System.out.println("Interrupted in sleep");
-            }
-            return new ApiResponse();
-        }, executor);
+    private ApiResponse runDummyApi() {
+        System.out.println(Thread.currentThread().getName() + ":: Executing " + this.name());
+        try {
+            Thread.sleep(2000L);
+        } catch (InterruptedException e) {
+            System.out.println("Interrupted in sleep");
+        }
+        return new ApiResponse();
     }
 
     @Override
