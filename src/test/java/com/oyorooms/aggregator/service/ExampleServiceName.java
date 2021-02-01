@@ -1,6 +1,4 @@
-import com.oyorooms.aggregator.service.AggregatorRequest;
-import com.oyorooms.aggregator.service.Service;
-import com.oyorooms.aggregator.service.ServiceResponse;
+package com.oyorooms.aggregator.service;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
