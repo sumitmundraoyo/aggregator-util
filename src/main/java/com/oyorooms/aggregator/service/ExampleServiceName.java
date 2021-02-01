@@ -4,7 +4,7 @@ import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
-public enum ServiceName implements Service {
+public enum ExampleServiceName implements Service {
     A(Collections.EMPTY_SET),
     B(Collections.singleton(A)),
     C(Collections.singleton(A)),
@@ -17,11 +17,11 @@ public enum ServiceName implements Service {
 
     private final Set<Service> predecessors;
 
-    ServiceName(Set<Service> predecessors) {
+    ExampleServiceName(Set<Service> predecessors) {
         this.predecessors = new HashSet<>(predecessors);
     }
 
-    public static Set<Service> setOf(ServiceName... service) {
+    public static Set<Service> setOf(ExampleServiceName... service) {
         return new HashSet<>(Arrays.asList(service));
     }
 
