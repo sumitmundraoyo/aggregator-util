@@ -1,5 +1,7 @@
 package com.oyorooms.aggregator.service;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
@@ -11,13 +13,8 @@ public class DAGWiseServiceAggregator implements ServiceAggregator {
 
     @Override
     public Map<Service, CompletableFuture<ServiceResponse>> aggregate(Set<Service> services,
-                                                                      AggregatorRequest request) {
-        return aggregate(services, request, null);
-    }
-
-    @Override
-    public Map<Service, CompletableFuture<ServiceResponse>> aggregate(Set<Service> services,
-                                                                      AggregatorRequest request, Executor executor) {
+                                                                      AggregatorRequest request,
+                                                                      @Nullable Executor executor) {
         final Map<Service, CompletableFuture<ServiceResponse>> futureMap = new ConcurrentHashMap<>();
         Set<Service> serviceList = getRequiredServices(services);
         Map<Service, List<Service>> successorMap = buildSuccessorMap(serviceList);
@@ -29,6 +26,13 @@ public class DAGWiseServiceAggregator implements ServiceAggregator {
             futureMap.put(service, serviceFuture);
         }
         return futureMap;
+    }
+
+    @Override
+    public Map<Service, CompletableFuture<ServiceResponse>> aggregateNow(Set<Service> services, AggregatorRequest request, Executor executor) {
+        Map<Service, CompletableFuture<ServiceResponse>> map = aggregate(services, request, executor);
+        CompletableFuture.allOf(map.values().toArray(new CompletableFuture[0])).join();
+        return map;
     }
 
     private CompletableFuture<ServiceResponse> buildServiceFuture(Service service,

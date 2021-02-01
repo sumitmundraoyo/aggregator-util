@@ -7,9 +7,10 @@ import java.util.concurrent.Executor;
 
 public interface ServiceAggregator {
 
-    Map<Service, CompletableFuture<ServiceResponse>> aggregate(Set<Service> services, AggregatorRequest request);
-
     Map<Service, CompletableFuture<ServiceResponse>> aggregate(Set<Service> services, AggregatorRequest request,
+                                                               Executor executor);
+
+    Map<Service, CompletableFuture<ServiceResponse>> aggregateNow(Set<Service> services, AggregatorRequest request,
                                                                Executor executor);
 
 }

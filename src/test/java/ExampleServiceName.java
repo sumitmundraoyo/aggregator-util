@@ -1,4 +1,6 @@
-package com.oyorooms.aggregator.service;
+import com.oyorooms.aggregator.service.AggregatorRequest;
+import com.oyorooms.aggregator.service.Service;
+import com.oyorooms.aggregator.service.ServiceResponse;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -40,7 +42,7 @@ public enum ExampleServiceName implements Service {
     }
 
     private ApiResponse runDummyApi() {
-        System.out.println(Thread.currentThread().getName() + ":: Executing " + this.name());
+        System.out.println(System.currentTimeMillis() + ":: <" + Thread.currentThread().getName() + ">:: Executing " + this.name());
         try {
             Thread.sleep(2000L);
         } catch (InterruptedException e) {
