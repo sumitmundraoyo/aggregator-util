@@ -15,13 +15,13 @@ public enum ServiceName implements Service {
     H(setOf(F));
 
 
-    private final Set<ServiceName> predecessors;
+    private final Set<Service> predecessors;
 
-    ServiceName(Set<ServiceName> predecessors) {
-        this.predecessors = predecessors;
+    ServiceName(Set<Service> predecessors) {
+        this.predecessors = new HashSet<>(predecessors);
     }
 
-    private static Set<ServiceName> setOf(ServiceName... service) {
+    public static Set<Service> setOf(ServiceName... service) {
         return new HashSet<>(Arrays.asList(service));
     }
 

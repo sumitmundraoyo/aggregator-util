@@ -16,6 +16,7 @@ public class DAGWiseServiceAggregator implements ServiceAggregator {
         Set<Service> serviceList = getRequiredServices(services);
         Map<Service, List<Service>> successorMap = buildSuccessorMap(serviceList);
         List<Service> dagList = dagList(new ArrayList<>(serviceList), successorMap);
+        System.out.println("DAG:: " + dagList);
         for (Service service : dagList) {
             final CompletableFuture<ServiceResponse> serviceFuture = buildServiceFuture(service, futureMap);
             futureMap.put(service, serviceFuture);
@@ -63,9 +64,11 @@ public class DAGWiseServiceAggregator implements ServiceAggregator {
 
     private Set<Service> getRequiredServices(Set<Service> services) {
         Set<Service> resultSet = new HashSet<>();
+        if(services == null || services.isEmpty())
+            return resultSet;
         for (Service service : services) {
             resultSet.add(service);
-            resultSet.addAll(service.getPrecursors());
+            resultSet.addAll(getRequiredServices(service.getPrecursors()));
         }
         return resultSet;
     }

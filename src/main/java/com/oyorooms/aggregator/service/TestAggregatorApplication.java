@@ -14,5 +14,6 @@ public class TestAggregatorApplication {
         Map<Service, CompletableFuture<ServiceResponse>> futureMap = aggregator.aggregate(new HashSet<>(EnumSet.allOf(ServiceName.class)));
         CompletableFuture.allOf(futureMap.values().toArray(new CompletableFuture[0])).join();
         System.out.println("end");
+        CompletableFuture.allOf(aggregator.aggregate(ServiceName.setOf(ServiceName.G)).values().toArray(new CompletableFuture[0])).join();
     }
 }
